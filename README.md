@@ -26,8 +26,9 @@ const CREDENSIALS = {
     "redirect_uris":["xxxxxx"]
 }
 const CHANNNEL_ID = "UCqN87Ye4TNLB04EFhxJ0L5w"
+const LIVE_STATUS = "upcoming" // live status values are "completed", "live", "upcoming"
 
-getStreaming.getVideoId(CREDENSIALS, CHANNNEL_ID, callback)
+getStreaming.getVideoId(CREDENSIALS, CHANNNEL_ID, LIVE_STATUS, callback)
 
 function callback(videoId) {
     console.log(videoId)
