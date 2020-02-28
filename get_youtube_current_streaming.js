@@ -7,11 +7,11 @@ const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly'];
 const TOKEN_DIR = './credentials/';
 const TOKEN_PATH = TOKEN_DIR + 'token.json';
 
-exports.getVideoId = (credentials, channelId, callback) => {
-  authorize(credentials, channelId, getCurrentStreaming, callback);
+exports.getVideoId = (credentials, channelId, liveStatus, callback) => {
+  authorize(credentials, channelId, liveStatus, getCurrentStreaming, callback);
 }
 
-function authorize(credentials, channelId, authCallback, moduleCallback) {
+function authorize(credentials, channelId, liveStatus, authCallback, moduleCallback) {
   var clientId = credentials.client_id;
   var clientSecret = credentials.client_secret;
   var redirectUrl = credentials.redirect_uris[0];
@@ -23,7 +23,7 @@ function authorize(credentials, channelId, authCallback, moduleCallback) {
       getNewToken(oauth2Client, authCallback);
     } else {
       oauth2Client.credentials = JSON.parse(token);
-      authCallback(oauth2Client, channelId, moduleCallback);
+      authCallback(oauth2Client, channelId, liveStatus, moduleCallback);
     }
   });
 }
@@ -66,14 +66,13 @@ function storeToken(token) {
   });
 }
 
-function getCurrentStreaming(auth, channelId, callback) {
+function getCurrentStreaming(auth, channelId, liveStatus, callback) {
     let service = google.youtube('v3');
     service.search.list({
         auth: auth,
         part: 'id,snippet',
         channelId: channelId,
-        // eventType: 'live',
-        eventType: 'upcoming',
+        eventType: liveStatus,
         type: 'video',
         order: 'date',
         maxResults: '1'
