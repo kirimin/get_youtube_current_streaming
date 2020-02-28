@@ -1,0 +1,16 @@
+{
+  "name": "get_current_streaming_id",
+  "version": "1.0.0",
+  "description": "",
+  "main": "get_youtube_current_streaming.js",
+  "dependencies": {
+    "google-auth-library": "^5.10.1",
+    "googleapis": "^47.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kirimin/get_youtube_current_streaming.git"
+  },
+  "author": "kirimin",
+  "license": "ISC"
+}

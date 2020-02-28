@@ -1,0 +1,4 @@
+*/client_secret.json
+scripts/credentials/*
+node_modules/*
+package-lock.json
