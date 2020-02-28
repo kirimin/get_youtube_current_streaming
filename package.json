@@ -1,5 +1,5 @@
 {
-  "name": "get_current_streaming_id",
+  "name": "get_current_streaming",
   "version": "1.0.0",
   "description": "",
   "main": "get_youtube_current_streaming.js",
