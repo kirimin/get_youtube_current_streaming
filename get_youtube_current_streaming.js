@@ -1,4 +1,3 @@
-const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
@@ -8,6 +7,7 @@ const TOKEN_DIR = './credentials/';
 const TOKEN_PATH = TOKEN_DIR + 'token.json';
 
 exports.makeNewToken = (credentials, callback) => {
+  console.log("makeNewToken")
   var clientId = credentials.client_id;
   var clientSecret = credentials.client_secret;
   var redirectUrl = credentials.redirect_uris[0];
@@ -16,6 +16,7 @@ exports.makeNewToken = (credentials, callback) => {
 }
 
 exports.getVideoId = (credentials, token, channelId, liveStatus, callback) => {
+  console.log("getVideoId")
   authorize(credentials, token, channelId, liveStatus, getCurrentStreaming, callback);
 }
 
