@@ -7,25 +7,25 @@ const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly'];
 const TOKEN_DIR = './credentials/';
 const TOKEN_PATH = TOKEN_DIR + 'token.json';
 
-exports.getVideoId = (credentials, channelId, liveStatus, callback) => {
-  authorize(credentials, channelId, liveStatus, getCurrentStreaming, callback);
-}
-
-function authorize(credentials, channelId, liveStatus, authCallback, moduleCallback) {
+exports.makeNewToken = (credentials, callback) => {
   var clientId = credentials.client_id;
   var clientSecret = credentials.client_secret;
   var redirectUrl = credentials.redirect_uris[0];
   var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
+  getNewToken(oauth2Client, callback);
+}
 
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, function(err, token) {
-    if (err) {
-      getNewToken(oauth2Client, authCallback);
-    } else {
-      oauth2Client.credentials = JSON.parse(token);
-      authCallback(oauth2Client, channelId, liveStatus, moduleCallback);
-    }
-  });
+exports.getVideoId = (credentials, token, channelId, liveStatus, callback) => {
+  authorize(credentials, token, channelId, liveStatus, getCurrentStreaming, callback);
+}
+
+function authorize(credentials, token, channelId, liveStatus, authCallback, moduleCallback) {
+  var clientId = credentials.client_id;
+  var clientSecret = credentials.client_secret;
+  var redirectUrl = credentials.redirect_uris[0];
+  var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
+  oauth2Client.credentials = JSON.parse(token);
+  authCallback(oauth2Client, channelId, liveStatus, moduleCallback);
 }
 
 function getNewToken(oauth2Client, callback) {
