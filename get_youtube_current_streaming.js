@@ -8,25 +8,25 @@ const TOKEN_PATH = TOKEN_DIR + 'token.json';
 
 exports.makeNewToken = (credentials, callback) => {
   console.log("makeNewToken")
-  var clientId = credentials.client_id;
-  var clientSecret = credentials.client_secret;
-  var redirectUrl = credentials.redirect_uris[0];
-  var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
+  const clientId = credentials.client_id;
+  const clientSecret = credentials.client_secret;
+  const redirectUrl = credentials.redirect_uris[0];
+  const oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
   getNewToken(oauth2Client, callback);
 }
 
 exports.getVideoId = (credentials, token, channelId, liveStatus, callback) => {
   console.log("getVideoId")
-  authorize(credentials, token, channelId, liveStatus, getCurrentStreaming, callback);
+  const oauth2Client = authorize(credentials, token, channelId, liveStatus);
+  getCurrentStreaming(oauth2Client, channelId, liveStatus, callback)
 }
 
-function authorize(credentials, token, channelId, liveStatus, authCallback, moduleCallback) {
-  var clientId = credentials.client_id;
-  var clientSecret = credentials.client_secret;
-  var redirectUrl = credentials.redirect_uris[0];
-  var oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
-  oauth2Client.credentials = JSON.parse(token);
-  authCallback(oauth2Client, channelId, liveStatus, moduleCallback);
+function authorize(credentials, token) {
+  const clientId = credentials.client_id;
+  const clientSecret = credentials.client_secret;
+  const redirectUrl = credentials.redirect_uris[0];
+  const oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl);
+  return oauth2Client.credentials = JSON.parse(token);
 }
 
 function getNewToken(oauth2Client, callback) {
@@ -68,7 +68,7 @@ function storeToken(token) {
 }
 
 function getCurrentStreaming(auth, channelId, liveStatus, callback) {
-    let service = google.youtube('v3');
+    const service = google.youtube('v3');
     service.search.list({
         auth: auth,
         part: 'id,snippet',
@@ -82,7 +82,7 @@ function getCurrentStreaming(auth, channelId, liveStatus, callback) {
             console.log('The API returned an error: ' + err);
             return;
         }
-        let videos = response.data.items;
+        const videos = response.data.items;
         if (videos.length == 0) {
             console.log('No video found.');
             return;
